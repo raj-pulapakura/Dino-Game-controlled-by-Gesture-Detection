@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>closed.eec5f488-db2b-11ed-9d51-f889d270a834.jpg</filename>
+	<path>C:\Users\User\OneDrive\Desktop\literally everything\code\projects\Side Scroller Game with Gesture Detection\Tensorflow\workspace\iteration_2\images\train\closed.eec5f488-db2b-11ed-9d51-f889d270a834.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>275</width>
+		<height>183</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>closed</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>144</xmin>
+			<ymin>39</ymin>
+			<xmax>207</xmax>
+			<ymax>97</ymax>
+		</bndbox>
+	</object>
+</annotation>

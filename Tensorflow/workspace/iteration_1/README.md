@@ -1,8 +1,8 @@
 # Iteration 1
 
-This iteration served as a prototyping/proof of concept iteration to test if this project is feasible.
+This iteration serves as a prototyping/proof of concept stage to test if this project is feasible.
 
-## Configuration
+## Model 1: Configuration
 
 In this iteration a single model was created with the following characteristics:
 - Model Type: SSD MobileNet V2 FPNLite 320x320 ([Tensorflow Model Zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md))
@@ -12,11 +12,11 @@ In this iteration a single model was created with the following characteristics:
 - Number of steps trained for: 1000
 - Batch size: 8
 
-For more information about the model's configuration, go to models/model_1/pipeline.config which is located in this directory.
+For more information about the model's configuration, go to ```models/model_1/pipeline.config``` which is located in this directory.
 
-## Performance
+## Model 1: Performance
 
-The model performed surprising well as for real time detection. It was able to capture distinct variations of the palm (such as tilts) as well as for the closed hand.
+### Test dataset performance
 
 Here are the results for the test dataset evaluation:
 ```
@@ -35,5 +35,13 @@ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.700
 ```
 
 As you can see, the model performed fairly well, given that only 9 training images were provided per class.
+
+### Real-time performance
+
+The model also performed decently well during real-time detection. It was able to generally distinguish between the closed hand and open palm.
+
+## Next iteration...
+
+Now that I know that this project is feasible, I can expand on this model and try to reach new heights of performance.
 
 In the next iteration, I will use the same model architecture and configuration, however I will collect more samples for training and testing to see if it improves the performance of the model.

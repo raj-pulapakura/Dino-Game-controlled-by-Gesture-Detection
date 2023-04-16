@@ -1,0 +1,26 @@
+<annotation>
+	<folder>test</folder>
+	<filename>palm.eecb6e01-db2b-11ed-baf7-f889d270a834.jpg</filename>
+	<path>C:\Users\User\OneDrive\Desktop\literally everything\code\projects\Side Scroller Game with Gesture Detection\Tensorflow\workspace\iteration_2\images\test\palm.eecb6e01-db2b-11ed-baf7-f889d270a834.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>153</width>
+		<height>234</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>palm</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>12</xmin>
+			<ymin>31</ymin>
+			<xmax>125</xmax>
+			<ymax>209</ymax>
+		</bndbox>
+	</object>
+</annotation>

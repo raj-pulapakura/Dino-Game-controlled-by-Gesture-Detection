@@ -10,6 +10,7 @@ import time
 import uuid
 import shutil
 from colorama import Fore, Style
+import re
 
 def get_arguments():
     """
@@ -37,18 +38,18 @@ def create_temp_dir(images_dir):
     """
     path = os.path.join(images_dir, "collected")
     if not os.path.exists(path):
+        print(f"\t{path}")
         os.mkdir(path)
-
     return path
 
-def create_label_dirs(images_dir, labels):
+def create_label_dirs(collected_images_dir, labels):
     """
     Create directories for each label (if they do not already exist)
     """
     for label in labels:
-        path = os.path.join(images_dir, label)
-        print(f"\t{path}")
+        path = os.path.join(collected_images_dir, label)
         if not os.path.exists(path):
+            print(f"\t{path}")
             os.mkdir(path)
 
 def create_train_test_dirs(train_dir, test_dir):
@@ -57,17 +58,23 @@ def create_train_test_dirs(train_dir, test_dir):
     """
     if not os.path.exists(train_dir):
         os.mkdir(train_dir)
+        print(f"\t{train_dir}")
     if not os.path.exists(test_dir):
         os.mkdir(test_dir)
+        print(f"\t{test_dir}")
 
-def collect_images(images_dir, labels, imgs_per_class):
+def collect_images(collected_images_dir, labels, imgs_per_class):
     """
     Collects images using webcam
     """
-    print(Fore.CYAN + "COLLECTING IMAGES FROM WEBCAM:")
-    print(Fore.RED + "Connecting to webcam")
+    print(Fore.CYAN + "CONNECTING TO WEBCAM:")
+    print(Fore.RED + "Connecting...")
     cap = cv2.VideoCapture(0)
     print(Fore.GREEN + "Connected to webcam" + Style.RESET_ALL)
+    time.sleep(2)
+
+    print(Fore.CYAN + "STARTING COLLECTION PROCESS:" + Style.RESET_ALL)
+    time.sleep(2)
 
     img_count = 0
     total_imgs = len(labels) * imgs_per_class
@@ -79,6 +86,8 @@ def collect_images(images_dir, labels, imgs_per_class):
     previous = time.time()
     delta = 0
 
+    has_started = False
+
     while img_count < total_imgs:
         # show frame continuously
         _, frame = cap.read()
@@ -88,7 +97,12 @@ def collect_images(images_dir, labels, imgs_per_class):
         current = time.time()
         delta += (current-previous)
         previous = current
-            
+
+        # 5 second buffer time to get ready before collection begins
+        if not has_started and delta > 5:
+            has_started = True
+            delta = 0
+
         # check if we should go to the next label
         if current_label_img_count == imgs_per_class:
             current_label_img_count = 0
@@ -96,16 +110,16 @@ def collect_images(images_dir, labels, imgs_per_class):
             printed_label = False
         
         # print current label
-        if not printed_label:
+        if has_started and not printed_label:
             print(f"Collecting images for {labels[current_label_idx]}")
             printed_label=True
         
-        # if delta is greater than 3 (3 seconds has passed), then save frame
-        if delta > 3:
+        # if delta is greater than n (n seconds has passed), then save frame
+        if has_started and delta > 5:
                 
             # save frame
             print(f"\tSaving image {current_label_img_count} for {labels[current_label_idx]}")
-            path = os.path.join(images_dir, labels[current_label_idx], f"{labels[current_label_idx]}.{uuid.uuid1()}.jpg")
+            path = os.path.join(collected_images_dir, labels[current_label_idx], f"{labels[current_label_idx]}.{uuid.uuid1()}.jpg")
             cv2.imwrite(path, frame)
             print("\tSaved")
             # increment stuff
@@ -120,14 +134,30 @@ def collect_images(images_dir, labels, imgs_per_class):
     cap.release()
     cv2.destroyAllWindows()
 
-def partition_into_train_and_test(images_dir, train_dir, test_dir, labels, test_size):
+def rename_imgs(collected_images_dir, labels):
+    """
+    There may be existing images in the collected directory of images.
+    Renames these images into the desired [label]:[id] format
+    """
+    # build regex
+    label_matcher = "|".join(labels) 
+    regex_str = fr"[{label_matcher}]+\.[a-zA-Z0-9\-]+\.jpg"
+    regex = re.compile(regex_str)
+    for label in labels:
+        label_path = os.path.join(collected_images_dir, label)
+        imgs = os.listdir(label_path)
+        for img in imgs:
+            if not regex.match(img):
+                os.rename(os.path.join(label_path, img), os.path.join(label_path, f"{label}.{uuid.uuid1()}.jpg"))
+
+def partition_into_train_and_test(collected_images_dir, train_dir, test_dir, labels, test_size):
     """
     Separate collected samples into training and testing directories with shuffling
     """
     print(Fore.CYAN + "SEPARATING COLLECTED SAMPLES INTO TRAIN AND TEST DIRECTORIES:" + Style.RESET_ALL)
     time.sleep(1)
     for label in labels:
-        label_path = os.path.join(images_dir, label)
+        label_path = os.path.join(collected_images_dir, label)
         samples = os.listdir(label_path)
         # shuffling
         random.shuffle(samples)
@@ -162,11 +192,12 @@ def remove_temp_dir(dir):
 def main():
 
     images_dir, train_dir, test_dir, labels, imgs_per_class, test_size = get_arguments()
+    print(Fore.CYAN + "CREATING DIRECTORIES:" + Style.RESET_ALL)
     collected_imgs_dir = create_temp_dir(images_dir)
-    print(Fore.CYAN + "CREATING DIRECTORIES" + Style.RESET_ALL)
     create_label_dirs(collected_imgs_dir, labels)
     create_train_test_dirs(train_dir, test_dir)
     collect_images(collected_imgs_dir, labels, imgs_per_class)
+    rename_imgs(collected_imgs_dir, labels)
     partition_into_train_and_test(collected_imgs_dir, train_dir, test_dir, labels, test_size)
     remove_temp_dir(collected_imgs_dir)
 
