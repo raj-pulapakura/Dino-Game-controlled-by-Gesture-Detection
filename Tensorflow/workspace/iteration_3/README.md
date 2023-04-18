@@ -56,8 +56,6 @@ For more information about the model's configuration, go to ```models/model_2/pi
 
 ### Test dataset performance
 
-This model performed exceedingly well on the test data.
-
 Here are the results for the test dataset evaluation:
 ```
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.010
