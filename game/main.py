@@ -3,9 +3,11 @@ import time
 import cv2
 import math
 import pygame
+import tensorflow as tf
 from player import Player
 from obstacle import Obstacle
-from model_bridge import get_detections
+from utilities.convert_array_to_surface import convert_array_to_surface
+from utilities.model_bridge import get_detection_func
 from colorama import Fore, Style
 
 print(Fore.YELLOW + "Setting up..." + Style.RESET_ALL)
@@ -19,15 +21,11 @@ PATHS = {
     "bg_asset": os.path.join("game", "assets", "bg.png")
 }
 
-# detection model setup
-model = get_detections.load_model(PATHS["saved_model"])
-category_index = get_detections.get_category_index(PATHS["label_map"])
-
 # pygame setup
 pygame.init()
+pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN])
 clock = pygame.time.Clock()
 running = True
-pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN])
 
 # screen setup
 SCREEN_WIDTH = 1200
@@ -74,57 +72,51 @@ SHIFT = 10
 IS_SCROLLING = False
 FPS = 60
 
+# detection model setup
+detect_best = get_detection_func(PATHS["saved_model"], PATHS["label_map"])
+
 # camera feed setup
-def convert_camera_feed_to_surface(feed):
-    feed = cv2.cvtColor(feed,cv2.COLOR_BGR2RGB)
-    feed = pygame.pixelcopy.make_surface(feed)
-    feed = pygame.transform.flip(feed, flip_x=True, flip_y=False)
-    feed = pygame.transform.rotate(feed, 90)
-    feed = pygame.transform.scale_by(feed, 0.5)
-    return feed
 detection_class = 0
 detection_score = 0
+has_reset_hand = True
+
 print(Fore.CYAN + "Connecting to webcam..." + Style.RESET_ALL)
 cap = cv2.VideoCapture(0)
 print(Fore.GREEN + "Connected to webcam" + Style.RESET_ALL)
+
 ret, feed = cap.read()
-detections_surface = convert_camera_feed_to_surface(feed)
+detections_surface = convert_array_to_surface(feed)
 
-print("STARTING GAME")
-
+# time tracker setup
 current_time = time.time()
 previous_time = time.time()
 delta = 0
 
-"""
-2 = palm
-1 = closed
-"""
-
-has_reset_hand = True
+print("STARTING GAME")
 
 # game loop
 while running:
 
+    # poll for events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # update delta
     previous_time = current_time
     current_time = time.time()
     delta += current_time - previous_time
 
     # run detections periodically (otherwise the game becomes really slow)
     if delta > 0.25:
+        # reset delta
         delta = 0
-        # get camera feed from webcams
+        # get camera feed from webcam
         ret, feed = cap.read()
         # get detections
-        detection_class, detection_score, feed_with_detections = get_detections.detect(model, category_index, feed)
-        print(f"class: {detection_class} score: {detection_score}")
+        detection_class, detection_score, feed_with_detections = detect_best(feed)
         # update detection surface
-        detections_surface = convert_camera_feed_to_surface(feed_with_detections)
-
-    # poll for events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        detections_surface = convert_array_to_surface(feed_with_detections)
 
     # draw scrolling background
     for i in range(n_tiles):
@@ -140,21 +132,7 @@ while running:
         if bg_width - abs(scroll) <= 0:
             scroll = -SHIFT
 
-    # event handler
-    # keys = pygame.key.get_pressed()
-    # if keys[pygame.K_RETURN]:
-    #     IS_SCROLLING = True
-    #     player.start_walking()
-    # if keys[pygame.K_SPACE] and IS_SCROLLING:
-    #     player.start_jumping()
-
-    # detecting for palm
-    if int(detection_class) == 2 and detection_score > 0.80 and has_reset_hand and IS_SCROLLING:
-        # only jump if the game has started and the jump has been reset
-        player.start_jumping()
-        has_reset_hand = False
-
-    # detecting for closed
+    # detect for closed
     if int(detection_class) == 1 and detection_score > 0.80:
         # if game has not started, then start game
         if not IS_SCROLLING:
@@ -163,6 +141,12 @@ while running:
         # if the game has started, then reset the jump
         if not has_reset_hand:
             has_reset_hand = True
+            
+    # detect for palm
+    if int(detection_class) == 2 and detection_score > 0.80 and has_reset_hand and IS_SCROLLING:
+        # only jump if the game has started and the jump has been reset
+        player.start_jumping()
+        has_reset_hand = False
 
     # check if obstacle has passed the screen -> load a new obstacle
     if obstacle.rect.right < 0:
@@ -174,17 +158,16 @@ while running:
         )
         obstacle_group.add(obstacle)
 
-    # RENDER
-    # player
+    # render player
     player_group.draw(screen)
     player_group.update()
 
-    # obstacle
+    # render obstacle
     obstacle_group.draw(screen)
     if IS_SCROLLING: # only move obstacle if scrolling
         obstacle_group.update(SHIFT)
 
-    # detections
+    # render detections
     screen.blit(detections_surface.convert(), (0, 0))
     pygame.display.update()
 
@@ -199,3 +182,16 @@ while running:
     clock.tick(FPS)
 
 pygame.quit()
+
+"""
+ARCHIVE:
+
+
+    # event handler
+    # keys = pygame.key.get_pressed()
+    # if keys[pygame.K_RETURN]:
+    #     IS_SCROLLING = True
+    #     player.start_walking()
+    # if keys[pygame.K_SPACE] and IS_SCROLLING:
+    #     player.start_jumping()
+"""
