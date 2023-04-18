@@ -76,6 +76,6 @@ As you can see, the precision and recall of the model aren't too great.
 
 ### Real-time detection
 
-The model performed atrociously during real-time detection. It kept mislabelling other items in the room as a palm. It would occasionally be able to detect my palm with a confidence of around 60%, however it was not able to detection my closed hand at all.
+The model performed atrociously during real-time detection. It kept mislabelling other items in the room as a palm. It would occasionally be able to detect my palm with a confidence of around 60%, however it was not able to detect my closed hand at all.
 
 Let's try a different architecture!
