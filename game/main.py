@@ -141,7 +141,7 @@ while running:
         # if the game has started, then reset the jump
         if not has_reset_hand:
             has_reset_hand = True
-            
+
     # detect for palm
     if int(detection_class) == 2 and detection_score > 0.80 and has_reset_hand and IS_SCROLLING:
         # only jump if the game has started and the jump has been reset
@@ -169,7 +169,6 @@ while running:
 
     # render detections
     screen.blit(detections_surface.convert(), (0, 0))
-    pygame.display.update()
 
     # check if player has collided with obstacle -> end game
     if player.rect.colliderect(obstacle.rect):
@@ -182,16 +181,3 @@ while running:
     clock.tick(FPS)
 
 pygame.quit()
-
-"""
-ARCHIVE:
-
-
-    # event handler
-    # keys = pygame.key.get_pressed()
-    # if keys[pygame.K_RETURN]:
-    #     IS_SCROLLING = True
-    #     player.start_walking()
-    # if keys[pygame.K_SPACE] and IS_SCROLLING:
-    #     player.start_jumping()
-"""

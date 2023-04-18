@@ -39,12 +39,45 @@ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.925
 
 The model performed desirably well during real time detection. It was able to confidently (90%-100%) distinguish between a closed hand and an open palm.
 
-## Final Thoughts
+Let's integrate this into the game!
 
-This model performs the best out of all the previous models. Saying this, I believe it is ready for exporting and integration into the game.
+## Model 2: Configuration
 
-This process of iteration and testing out different model configurations has been a valuable learning experience for me. I now hold a deeper appreciation for the classical AI saying: "Garbage in, Garbage out". This cliche truly does hold, as low-quality data leads to undesirable performance, and high-quality data and annotation leads to prolific performance.
+After integrating Model 1 into the game, I was hoping to increase the speed at which detections were made. So I attempted to train a model with the CenterNet architecture provided by Tensorflow which has a speed of 6 ms (compared to SSD's 22 ms) according to Tensorflow Model Zoo. However, this didn't go as planned and the model ended up performing terribly. Like absolutely terrible.
 
-However, I believe the most important lesson I have gained from this experience is to not give up despite the challenges I may encounter. When the Iteration 2 Model 1 performance turned out to be bad, I panicked and thought that I would never achieve a higher performance than the prototype model. It took a moment of self-reflection and motivation to continue persisting with the training process, until I finally reached a desirable model performance.
+- Model Type: CenterNet MobileNetV2 FPN 512x512 ([Tensorflow Model Zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md))
+- Classes: palm, closed
+- Training samples per class: 35-37
+- Testing samples per class: 4-5
+- Number of steps trained for: 5000
+- Batch size: 8
 
-Anyways, now that the training process is finally over, let's integrate this model into the game!
+For more information about the model's configuration, go to ```models/model_2/pipeline.config``` which is located in this directory.
+
+### Test dataset performance
+
+This model performed exceedingly well on the test data.
+
+Here are the results for the test dataset evaluation:
+```
+Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.010
+Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.027
+Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.000
+Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.000
+Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.019
+Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.000
+Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.070
+Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.070
+Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.000
+Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.087
+```
+
+As you can see, the precision and recall of the model aren't too great.
+
+### Real-time detection
+
+The model performed atrociously during real-time detection. It kept mislabelling other items in the room as a palm. It would occasionally be able to detect my palm with a confidence of around 60%, however it was not able to detection my closed hand at all.
+
+Let's try a different architecture!
