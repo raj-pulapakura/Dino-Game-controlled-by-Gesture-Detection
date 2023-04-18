@@ -21,7 +21,7 @@ def get_category_index(path_to_label_map):
                                                                         use_display_name=True)
     return category_index
 
-def get_detections(model, category_index, image):
+def detect(model, category_index, image):
     """
     Returns detection class with the highest score, the score and the image with the detection
     """

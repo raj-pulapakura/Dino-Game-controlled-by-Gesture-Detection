@@ -5,7 +5,7 @@ import math
 import pygame
 from player import Player
 from obstacle import Obstacle
-from model_bridge.get_detections import load_model, get_category_index, get_detections
+from model_bridge import get_detections
 from colorama import Fore, Style
 
 print(Fore.YELLOW + "Setting up..." + Style.RESET_ALL)
@@ -20,8 +20,8 @@ PATHS = {
 }
 
 # detection model setup
-model = load_model(PATHS["saved_model"])
-category_index = get_category_index(PATHS["label_map"])
+model = get_detections.load_model(PATHS["saved_model"])
+category_index = get_detections.get_category_index(PATHS["label_map"])
 
 # pygame setup
 pygame.init()
@@ -116,7 +116,7 @@ while running:
         # get camera feed from webcams
         ret, feed = cap.read()
         # get detections
-        detection_class, detection_score, feed_with_detections = get_detections(model, category_index, feed)
+        detection_class, detection_score, feed_with_detections = get_detections.detect(model, category_index, feed)
         print(f"class: {detection_class} score: {detection_score}")
         # update detection surface
         detections_surface = convert_camera_feed_to_surface(feed_with_detections)
@@ -141,19 +141,28 @@ while running:
             scroll = -SHIFT
 
     # event handler
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_RETURN]:
-        IS_SCROLLING = True
-        player.start_walking()
-    if keys[pygame.K_SPACE] and IS_SCROLLING:
-        player.start_jumping()
+    # keys = pygame.key.get_pressed()
+    # if keys[pygame.K_RETURN]:
+    #     IS_SCROLLING = True
+    #     player.start_walking()
+    # if keys[pygame.K_SPACE] and IS_SCROLLING:
+    #     player.start_jumping()
 
-    if int(detection_class) == 2 and detection_score > 0.90 and has_reset_hand and IS_SCROLLING:
+    # detecting for palm
+    if int(detection_class) == 2 and detection_score > 0.80 and has_reset_hand and IS_SCROLLING:
+        # only jump if the game has started and the jump has been reset
         player.start_jumping()
         has_reset_hand = False
 
-    if int(detection_class) == 1 and detection_score > 0.90 and not has_reset_hand:
-        has_reset_hand = True 
+    # detecting for closed
+    if int(detection_class) == 1 and detection_score > 0.80:
+        # if game has not started, then start game
+        if not IS_SCROLLING:
+            IS_SCROLLING = True
+            player.start_walking()
+        # if the game has started, then reset the jump
+        if not has_reset_hand:
+            has_reset_hand = True
 
     # check if obstacle has passed the screen -> load a new obstacle
     if obstacle.rect.right < 0:
@@ -184,9 +193,9 @@ while running:
         IS_SCROLLING = False
         player.end_walking()
         player.end_jumping()
+        running = False
 
     pygame.display.flip()
-
     clock.tick(FPS)
 
 pygame.quit()
