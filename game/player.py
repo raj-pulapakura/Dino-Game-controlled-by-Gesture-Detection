@@ -10,13 +10,15 @@ class Player(pygame.sprite.Sprite):
         self.jump_velocity = jump_velocity
         self.jump_height = jump_height
         self.jump_gravity = jump_gravity
-        self.walking_sprites = [pygame.transform.scale_by(pygame.image.load(p).convert_alpha(), 1.6) for p in walking_sprite_paths]
-        self.jumping_sprite = pygame.transform.scale_by(pygame.image.load(jumping_sprite_path).convert_alpha(), 1.6)
+        self.walking_sprites = [pygame.transform.scale_by(pygame.image.load(p).convert_alpha(), 0.75) for p in walking_sprite_paths]
+        self.jumping_sprite = pygame.transform.scale_by(pygame.image.load(jumping_sprite_path).convert_alpha(), 0.75)
         
         self.current_walking_sprite = 0
         self.image = self.walking_sprites[self.current_walking_sprite]
 
         self.rect = self.image.get_rect()
+        self.rect.width -= 20
+        self.rect.height -= 20
         self.rect.bottomleft = (pos_x, pos_y)
 
     def start_walking(self):
