@@ -56,8 +56,6 @@ For more information about the model's configuration, go to ```models/model_2/pi
 
 ### Test dataset performance
 
-This model performed exceedingly well on the test data.
-
 Here are the results for the test dataset evaluation:
 ```
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.010
@@ -78,6 +76,6 @@ As you can see, the precision and recall of the model aren't too great.
 
 ### Real-time detection
 
-The model performed atrociously during real-time detection. It kept mislabelling other items in the room as a palm. It would occasionally be able to detect my palm with a confidence of around 60%, however it was not able to detection my closed hand at all.
+The model performed atrociously during real-time detection. It kept mislabelling other items in the room as a palm. It would occasionally be able to detect my palm with a confidence of around 60%, however it was not able to detect my closed hand at all.
 
 Let's try a different architecture!
