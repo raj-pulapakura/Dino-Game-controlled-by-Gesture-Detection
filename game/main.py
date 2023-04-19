@@ -175,10 +175,11 @@ while True:
         screen.blit(detections_surface.convert(), (0, 0))
 
         # render text
-        if not is_scrolling and not has_collided:
-            screen.blit(start_surface, (400, 60))
-        else:
-            screen.blit(end_surface, (400, 60))
+        if not is_scrolling:
+            if has_collided:
+                screen.blit(end_surface, (400, 60))
+            else:
+                screen.blit(start_surface, (400, 60))
 
         # render restart button
         restart_button.process()
