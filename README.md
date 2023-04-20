@@ -48,5 +48,3 @@ The two main folders are *game* and *Tensorflow*. *game* contains the files rela
 ## Detection Model
 
 The final detection model used in the game is the [SSD MobileNet V2 FPNLite 320x320](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md). I chose this model as it is fast and provides decent performance in real time detection.
-
-## How to try out the game for yourself
