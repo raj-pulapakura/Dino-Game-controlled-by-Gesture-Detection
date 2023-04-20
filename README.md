@@ -21,3 +21,32 @@ palm = JUMP, closed = RESET
 
 ![Group 1](https://user-images.githubusercontent.com/87762282/233251641-56517779-70f4-445e-9060-3eaec3dd661f.png)
 
+## Project Code Structure
+
+If you want to dive into the code for this project, here's a quick explanation of how to navigate through it.
+
+The two main folders are *game* and *Tensorflow*. *game* contains the files relating to the dino game implementation such as scripts, classes and assets. *Tensorflow* contains all the code relating to model development.
+
+### *game*
+
+***assets***: this folder contains the images used in the game such as the dino sprite, cactus sprite and restart button icon.
+
+***utilities***: this folder contains various helper functins used in the game
+
+***Button.py, Obstacle.py, Player.py***: classes used in the game
+
+***main.py***: the code for the main game loop and integration of the model
+
+### *Tensorflow*
+
+***models***: [cloned repository](https://github.com/tensorflow/models) which contains all the code relating to Tensorflow model development including the object detection API
+
+***scripts***: various scripts used in the model development process
+
+***workspace***: model development zone; organised into iterations; each iteration contains a README.md file which explains the contents of the iteration folder
+
+## Detection Model
+
+The final detection model used in the game is the [SSD MobileNet V2 FPNLite 320x320](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md). I chose this model as it is fast and provides decent performance in real time detection.
+
+## How to try out the game for yourself
