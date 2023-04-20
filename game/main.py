@@ -65,10 +65,10 @@ while True:
             os.path.join(PATHS["assets"], "dinorun0001.png"),
         ],
         jumping_sprite_path=os.path.join(PATHS["assets"], "dinoJump0000.png"),
-        walking_speed=0.6,
-        jump_velocity=27,
-        jump_height=27,
-        jump_gravity=3,
+        walking_speed=0.7,
+        jump_velocity=32,
+        jump_height=32,
+        jump_gravity=4,
     ) 
     player_group = pygame.sprite.Group()
     player_group.add(player)
@@ -135,7 +135,7 @@ while True:
         delta += current_time - previous_time
 
         # run detections periodically (otherwise the game becomes really slow)
-        if delta > 0.065:
+        if delta > 0.07:
             # reset delta
             delta = 0
             # get camera feed from webcam

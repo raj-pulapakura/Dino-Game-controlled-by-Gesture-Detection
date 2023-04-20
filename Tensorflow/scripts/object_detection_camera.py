@@ -78,7 +78,7 @@ while True:
           category_index,
           use_normalized_coordinates=True,
           max_boxes_to_draw=1,
-          min_score_thresh=0,
+          min_score_thresh=0.9,
           agnostic_mode=False)
 
     # Display output
