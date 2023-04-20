@@ -3,11 +3,12 @@ import sys
 import time
 import cv2
 import pygame
-from player import Player
-from obstacle import Obstacle
-from button import Button
+from Player import Player
+from Obstacle import Obstacle
+from Button import Button
 from utilities.convert_array_to_surface import convert_array_to_surface
 from utilities.model_bridge import get_detection_func
+from utilities.get_obstacle_start_x import get_obstacle_start_x
 from colorama import Fore, Style
 
 # SETUP ------------------------------------------------------------------------------------------------
@@ -57,23 +58,23 @@ while True:
     PLAYER_START_X = 300
     PLAYER_START_Y = 500
     player = Player(
-        pos_x=PLAYER_START_X, 
-        pos_y=PLAYER_START_Y, 
+        pos_x=PLAYER_START_X,
+        pos_y=PLAYER_START_Y,
         walking_sprite_paths=[
             os.path.join(PATHS["assets"], "dinorun0000.png"),
             os.path.join(PATHS["assets"], "dinorun0001.png"),
         ],
         jumping_sprite_path=os.path.join(PATHS["assets"], "dinoJump0000.png"),
         walking_speed=0.6,
-        jump_velocity=20,
-        jump_height=20,
-        jump_gravity=1,
+        jump_velocity=27,
+        jump_height=27,
+        jump_gravity=3,
     ) 
     player_group = pygame.sprite.Group()
     player_group.add(player)
 
     # obstacle setup
-    OBSTACLE_START_X = SCREEN_WIDTH+100 # obstacle will start off the screen
+    OBSTACLE_START_X = get_obstacle_start_x(SCREEN_WIDTH) # obstacle will start off the screen
     OBSTACLE_START_Y = 520
     obstacle = Obstacle(
         pos_x=OBSTACLE_START_X,
@@ -114,7 +115,7 @@ while True:
     # game loop (stops when player collides with obstacle)
     while is_playing:
 
-        screen.fill((255, 255, 255))
+        screen.fill((220, 248, 250))
 
         # poll for events
         for event in pygame.event.get():
@@ -134,7 +135,7 @@ while True:
         delta += current_time - previous_time
 
         # run detections periodically (otherwise the game becomes really slow)
-        if delta > 0.1 and not player.is_jumping:
+        if delta > 0.065:
             # reset delta
             delta = 0
             # get camera feed from webcam
@@ -194,7 +195,7 @@ while True:
         if obstacle.rect.right < 0:
             obstacle_group.remove(obstacle)
             obstacle = Obstacle(
-                pos_x=OBSTACLE_START_X,
+                pos_x=get_obstacle_start_x(SCREEN_WIDTH),
                 pos_y=OBSTACLE_START_Y,
                 img_path=os.path.join(PATHS["assets"], "cactusSmall0000.png")
             )

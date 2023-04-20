@@ -7,7 +7,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = pygame.transform.scale_by(pygame.image.load(img_path).convert_alpha(), 0.75)
         self.rect = self.image.get_rect()
         self.rect.bottomleft = (pos_x, pos_y)
-        self.rect.width -= 20
+        self.rect.width -= 15
         self.rect.height -= 20
 
     def update(self, decrement):

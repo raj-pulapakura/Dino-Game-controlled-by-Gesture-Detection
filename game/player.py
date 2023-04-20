@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.walking_sprites[self.current_walking_sprite]
 
         self.rect = self.image.get_rect()
-        self.rect.width -= 20
+        self.rect.width -= 15
         self.rect.height -= 20
         self.rect.bottomleft = (pos_x, pos_y)
 
