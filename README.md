@@ -11,7 +11,7 @@ This project uses libraries such as Pygame (game development), Tensorflow (model
 
 ## How it works
 
-I made a YouTube video which explains the game mechanics ->
+I made a YouTube video which explains the game mechanics -> https://www.youtube.com/watch?v=GvOFWHpD_iY&t=10s
 
 If you want a quick explanation:
 
