@@ -1,5 +1,5 @@
 # Side-Scroller-Game-Gesture-Detection
-The classic chrome dino game but you don't use the keyboard! Use your hand movements to make the dino jump!
+The classic chrome dino game but you don't use the keyboard! Instead, use real-time hand gestures to make the dino jump!
 
 ## Overview
 
