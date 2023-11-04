@@ -214,13 +214,19 @@ while True:
 
         if score == 200:
             shift += 1
-        if score == 400:
+        if score == 300:
             shift += 1
-        if score == 800:
+        if score == 400:
             shift += 2
-        if score == 1600:
+        if score == 500:
             shift += 2
-        if score == 3200:
+        if score == 600:
+            shift += 3
+        if score == 700:
+            shift += 3
+        if score == 900:
+            shift += 3
+        if score == 1100:
             shift += 3
 
         pygame.display.flip()
