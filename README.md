@@ -1,5 +1,5 @@
 # Side-Scroller-Game-Gesture-Detection
-The classic chrome dino game but you don't use the keyboard! Use your hand movements to make the dino jump!
+The classic chrome dino game but you don't use the keyboard! Instead use real-time hand gestures to make the dino jump!
 
 ## Overview
 
@@ -11,7 +11,7 @@ This project uses libraries such as Pygame (game development), Tensorflow (model
 
 ## How it works
 
-I made a YouTube video which explains the game mechanics ->
+I made a YouTube video which explains the game mechanics -> https://www.youtube.com/watch?v=GvOFWHpD_iY&t=10s
 
 If you want a quick explanation:
 
@@ -48,5 +48,3 @@ The two main folders are *game* and *Tensorflow*. *game* contains the files rela
 ## Detection Model
 
 The final detection model used in the game is the [SSD MobileNet V2 FPNLite 320x320](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md). I chose this model as it is fast and provides decent performance in real time detection.
-
-## How to try out the game for yourself
