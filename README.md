@@ -8,6 +8,8 @@ The classic dino game, except its controlled by your hand!
 
 This project highlights the intersection of Game Development and Computer Vision technologies, specifically real-time Object Detection.
 
+The game utilizes your webcam to capture your gestures in real-time. An object-detection model is used to classify your gestures, which make the dino jump.
+
 ### Libraries used
 
 - Pygame (to build the game interface)
