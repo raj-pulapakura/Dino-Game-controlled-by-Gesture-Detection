@@ -1,25 +1,35 @@
-# Dino Game controlled by Gesture Detection
-The classic chrome dino game but you don't use the keyboard! Instead use real-time hand gestures to make the dino jump!
+# 🦖 Dino Game controlled by Gesture Detection
 
-## Overview
-
-This project combines the simplicity of the chrome dino game with the complexity of an object detection model.
+The classic dino game, except its controlled by your hand!
 
 ![dino](https://github.com/raj-pulapakura/Dino-Game-controlled-by-Gesture-Detection/assets/87762282/92b7e1e9-918a-4d7a-bc19-5f518aca820c)
 
-This project uses libraries such as Pygame (game development), Tensorflow (model development) and OpenCV (computer vision).
+## 📌 Overview
 
-## How it works
+This project highlights the intersection of game development and computer vision technologies, specifically real-time object detection.
 
-I made a YouTube video which explains the game mechanics -> https://www.youtube.com/watch?v=GvOFWHpD_iY&t=10s
+### Libraries used
 
-If you want a quick explanation:
+- Pygame (to build the game interface)
+- TensorFlow (to train the object detection model)
+- OpenCV (processing and labelling images).
 
-The object detection model is trained on two classes: a closed hand and an open palm. To jump, open your palm. The detection model will detect this and make the dino jump. Then, you must reset the jump by closing your hand, after which you can jump again by opening your palm.
+## 🤗 How it works
 
-palm = JUMP, closed = RESET
+### YouTube Game Explanation
+
+I made a YouTube video showing how the game works. Check it out 👇
+
+[![Screenshot 2023-12-14 161047](https://github.com/raj-pulapakura/Dino-Game-controlled-by-Gesture-Detection/assets/87762282/d70803e5-38e0-4ed6-8c8e-c1e43b5f0361)](https://www.youtube.com/watch?v=GvOFWHpD_iY)
+
+### Quick Explanation
+
+- The object detection model is trained on two classes: a closed hand and an open palm. 
+- When you open your palm, this triggers the dino to jump. To jump again, you need to first reset the dino by closing your hand.
 
 ![Group 1](https://user-images.githubusercontent.com/87762282/233251641-56517779-70f4-445e-9060-3eaec3dd661f.png)
+
+## 🛠️ Development process
 
 ## Project Code Structure
 
