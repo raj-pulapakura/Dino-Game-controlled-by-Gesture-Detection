@@ -5,7 +5,7 @@ The classic chrome dino game but you don't use the keyboard! Instead use real-ti
 
 This project combines the simplicity of the chrome dino game with the complexity of an object detection model.
 
-![Screenshot 2023-04-20 131226](https://user-images.githubusercontent.com/87762282/233249112-ad933c3d-810a-49ff-bcb3-03e8bc98c9ec.png)
+![dino](https://github.com/raj-pulapakura/Dino-Game-controlled-by-Gesture-Detection/assets/87762282/92b7e1e9-918a-4d7a-bc19-5f518aca820c)
 
 This project uses libraries such as Pygame (game development), Tensorflow (model development) and OpenCV (computer vision).
 
